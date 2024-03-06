@@ -26,8 +26,10 @@ def perform_unlock_task(coordinates: dict) -> None:
     time.sleep(1)
     pyautogui.click(coordinates['main_blank'])
     time.sleep(1)
+
     for i in range(11):
         pyautogui.press('tab')
+
     pyautogui.press('enter')
     time.sleep(10)
     pyautogui.click(coordinates['mm_blank'])
@@ -37,7 +39,6 @@ def perform_unlock_task(coordinates: dict) -> None:
         pyautogui.press('tab')
 
     pyautogui.press('1')
-    
     pyautogui.scroll(-1000)
     time.sleep(3)
     pyautogui.click(coordinates['mm_approve'])
@@ -55,8 +56,10 @@ def perform_change_token_task(coordinates: dict, select_token: 1) -> None:
     pyautogui.click(coordinates['token_positions'][select_token])
     time.sleep(1)
     pyautogui.click(coordinates['main_blank'])
+
     for i in range(4):
         pyautogui.press('tab')
+        
     pyautogui.write('1.001')
     pyautogui.click(coordinates['main_blank'])
     time.sleep(1)
@@ -83,7 +86,6 @@ def test_coords(coordinates: dict) -> None:
 
 def main() -> None:
 
-    token_positions = {1: (2680, 396), 2: (2680, 466), 3: (2680, 536), 4: (2680, 606)}
     current_token = 1
     count = 0
 
