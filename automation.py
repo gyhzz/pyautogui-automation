@@ -71,12 +71,12 @@ def test_coords(coordinates: dict) -> None:
 
     for k,v in coordinates.items():
         if type(v) != type(dict()):
-            time.sleep(1)
+            time.sleep(0.1)
             pyautogui.moveTo(v)
 
         else:
             for k1,v1 in v.items():
-                time.sleep(1)
+                time.sleep(0.1)
                 pyautogui.moveTo(v1)
 
 
@@ -90,7 +90,6 @@ def main() -> None:
 
         # Select random token and update current token with selected token
         token_list = [1, 2, 3, 4]
-        current_token = 1
         token_list.remove(current_token)
         select_token = token_list[random.randint(0, 2)]
         current_token = select_token
@@ -117,7 +116,7 @@ def main() -> None:
             print(f"Log - Unlocked token {select_token} {i+1}/{execution_count} time(s)")
 
             # Define random wait time between tasks
-            wait_time = random.randint(1, 3600)
+            wait_time = random.randint(1, 10)
 
             print(f"Log - Waiting for {wait_time} seconds")
 
