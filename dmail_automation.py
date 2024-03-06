@@ -74,6 +74,7 @@ def main() -> None:
         print('Log - Begin task')
 
         high_frq = toggle_high_frq()
+        high_frq = True
 
         if high_frq:
             execution_count = random.randint(3, 10)
@@ -99,7 +100,7 @@ def main() -> None:
             else:
                 wait_time = random.randint(60, 3600)
 
-            print(f'Waiting for {wait_time}')
+            print(f'Log - Waiting for {wait_time}')
             time.sleep(wait_time)
 
 
