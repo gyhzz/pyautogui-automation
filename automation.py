@@ -89,6 +89,7 @@ def main() -> None:
 
     token_positions = {1: (2680, 396), 2: (2680, 466), 3: (2680, 536), 4: (2680, 606)}
     current_token = 1
+    count = 0
 
     while True:
 
@@ -113,12 +114,15 @@ def main() -> None:
 
         for i in range(execution_count):
 
+            count += 1
+            print(f"Log - Performing transaction {count}")
+            
             perform_unlock_task()
 
             print(f"Log - Unlocked token {select_token} {i+1}/{execution_count} time(s)")
 
             # Define random wait time between tasks
-            wait_time = random.randint(1, 10)
+            wait_time = random.randint(1, 180)
 
             print(f"Log - Waiting for {wait_time} seconds")
 
