@@ -57,7 +57,6 @@ def test_coordinates(coordinates: dict) -> None:
     print('Log - Testing coordinates...')
 
     for k,v in coordinates.items():
-
         time.sleep(0.5)
         pyautogui.moveTo(v)
 
@@ -74,7 +73,6 @@ def main() -> None:
         print('Log - Begin task')
 
         high_frq = toggle_high_frq()
-        high_frq = True
 
         if high_frq:
             execution_count = random.randint(3, 10)
