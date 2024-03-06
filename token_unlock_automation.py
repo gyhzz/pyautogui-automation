@@ -32,7 +32,6 @@ def perform_unlock_task(coordinates: dict) -> None:
     pyautogui.click(coordinates['mm_blank'])
     pyautogui.scroll(1000)
 
-    
     for i in range(7):
         pyautogui.press('tab')
 
