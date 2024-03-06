@@ -3,51 +3,33 @@ import time
 import random
 
 
-'''
-Positions
-Outside Swap Box: (2118, 359)
-Select Token: (2846, 321)
-Token 1 Pos: (2680, 396)
-Token 2 Pos: (2680, 466)
-Token 3 Pos: (2680, 536)
-Token 4 Pos: (2680, 606)
-Unlock Token: (2687, 704)
-Inside MM Box: (3142, 257)
-Spending Cap: (3260, 405)
-MM Next/Approve: (3353, 559)
-'''
+def reset_unlock_task(coordinates: dict) -> None:
 
-token_top = (2845, 288)
-token_bottom = (2840, 437)
-
-
-def reset_unlock_task() -> None:
-
-    pyautogui.click(2118, 359)
+    pyautogui.click(coordinates['main_blank'])
     pyautogui.scroll(1000)
-    pyautogui.click(token_top)
+    pyautogui.click(coordinates['token_top'])
     time.sleep(1)
-    pyautogui.click(2600, 228)
-    pyautogui.click(2118, 359)
+    pyautogui.click(coordinates['token_1_reset_usdc'])
+    pyautogui.click(coordinates['main_blank'])
     time.sleep(1)
-    pyautogui.click(token_bottom)
+    pyautogui.click(coordinates['token_bottom'])
     time.sleep(1)
-    pyautogui.click(2507, 230)
-    pyautogui.click(2118, 359)
+    pyautogui.click(coordinates['token_2_reset_eth'])
+    pyautogui.click(coordinates['main_blank'])
     time.sleep(1)
 
 
-def perform_unlock_task() -> None:
+def perform_unlock_task(coordinates: dict) -> None:
 
-    pyautogui.click(2118, 359)
+    pyautogui.click(coordinates['main_blank'])
     time.sleep(1)
-    pyautogui.click(2118, 359)
+    pyautogui.click(coordinates['main_blank'])
     time.sleep(1)
     for i in range(11):
         pyautogui.press('tab')
     pyautogui.press('enter')
     time.sleep(7)
-    pyautogui.click(3142, 257)
+    pyautogui.click(coordinates['mm_blank'])
     pyautogui.scroll(1000)
 
     for i in range(7):
@@ -57,25 +39,25 @@ def perform_unlock_task() -> None:
     
     pyautogui.scroll(-1000)
     time.sleep(3)
-    pyautogui.click(3353, 559)
+    pyautogui.click(coordinates['mm_approve'])
     time.sleep(3)
-    pyautogui.click(3353, 559)
+    pyautogui.click(coordinates['mm_approve'])
     time.sleep(20)
 
 
-def perform_change_token_task(token_pos: tuple) -> None:
+def perform_change_token_task(coordinates: dict, select_token: 1) -> None:
 
-    reset_unlock_task()
-    pyautogui.click(token_top)
+    reset_unlock_task(coordinates)
+    pyautogui.click(coordinates['token_top'])
     time.sleep(1)
     pyautogui.scroll(1000)
-    pyautogui.click(token_pos)
+    pyautogui.click(coordinates['token_positions'][select_token])
     time.sleep(1)
-    pyautogui.click(2118, 359)
+    pyautogui.click(coordinates['main_blank'])
     for i in range(4):
         pyautogui.press('tab')
     pyautogui.write('1.001')
-    pyautogui.click(2118, 359)
+    pyautogui.click(coordinates['main_blank'])
     time.sleep(1)
 
 
@@ -83,6 +65,19 @@ def countdown(seconds: int) -> None:
 
     for i in range(seconds):
         print(f"Log - Waiting {i+1}/{seconds} seconds")
+
+
+def test_coords(coordinates: dict) -> None:
+
+    for k,v in coordinates.items():
+        if type(v) != type(dict()):
+            time.sleep(1)
+            pyautogui.moveTo(v)
+
+        else:
+            for k1,v1 in v.items():
+                time.sleep(1)
+                pyautogui.moveTo(v1)
 
 
 def main() -> None:
@@ -103,7 +98,7 @@ def main() -> None:
         print(f"Log - Selected Token {select_token}")
 
         # Change token on app to selected token
-        perform_change_token_task(token_positions[select_token])
+        perform_change_token_task(coordinates, select_token)
 
         print(f"Log - Changed to token {select_token}")
 
@@ -116,13 +111,13 @@ def main() -> None:
 
             count += 1
             print(f"Log - Performing transaction {count}")
-            
-            perform_unlock_task()
+
+            perform_unlock_task(coordinates)
 
             print(f"Log - Unlocked token {select_token} {i+1}/{execution_count} time(s)")
 
             # Define random wait time between tasks
-            wait_time = random.randint(1, 180)
+            wait_time = random.randint(1, 3600)
 
             print(f"Log - Waiting for {wait_time} seconds")
 
@@ -131,5 +126,20 @@ def main() -> None:
 
 if __name__ == "__main__":
 
+    coordinates = {'token_top': (2854, 222),
+                   'token_bottom': (2854, 380),
+                   'main_blank': (2118, 359),
+                   'mm_blank': (3142, 257),
+                   'mm_approve': (3353, 559),
+                   'token_1_reset_usdc': (2600, 228),
+                   'token_2_reset_eth': (2507, 230),
+                   'token_positions': {1: (2680, 396),
+                                       2: (2680, 466),
+                                       3: (2680, 536),
+                                       4: (2680, 606)}
+    }
+
+    # Test coordinates
+    test_coords(coordinates)
+
     main()
-    #pass
