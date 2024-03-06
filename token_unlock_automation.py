@@ -1,6 +1,7 @@
 import pyautogui
 import time
 import random
+from data import token_unlock_coordinates
 
 
 def reset_unlock_task(coordinates: dict) -> None:
@@ -125,18 +126,7 @@ def main() -> None:
 
 if __name__ == "__main__":
 
-    coordinates = {'token_top': (2854, 222),
-                   'token_bottom': (2854, 380),
-                   'main_blank': (2118, 359),
-                   'mm_blank': (3142, 257),
-                   'mm_approve': (3353, 559),
-                   'token_1_reset_usdc': (2600, 228),
-                   'token_2_reset_eth': (2507, 230),
-                   'token_positions': {1: (2680, 396),
-                                       2: (2680, 466),
-                                       3: (2680, 536),
-                                       4: (2680, 606)}
-    }
+    coordinates = token_unlock_coordinates
 
     # Test coordinates
     test_coords(coordinates)
