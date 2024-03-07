@@ -28,17 +28,21 @@ def reset_unlock_task(coordinates: dict) -> None:
 
 def perform_unlock_task(coordinates: dict) -> None:
 
-    pyautogui.click(coordinates['main_blank'])
-    time.sleep(1)
-    pyautogui.click(coordinates['main_blank'])
-    time.sleep(1)
+    # pyautogui.click(coordinates['main_tab'])
+    # time.sleep(1)
+    # pyautogui.click(coordinates['main_blank'])
+    # time.sleep(1)
 
     # for i in range(11):
     #     pyautogui.press('tab')
     # pyautogui.press('enter')
 
+    # pyautogui.click(coordinates['main_unlock'])
+    # pyautogui.click(coordinates['main_safe'])
+
+    pyautogui.click(coordinates['mm_taskbar'])
+    time.sleep(15)
     pyautogui.click(coordinates['main_unlock'])
-    pyautogui.click(coordinates['main_safe'])
 
     time.sleep(12)
     pyautogui.click(coordinates['mm_blank'])
@@ -56,11 +60,13 @@ def perform_unlock_task(coordinates: dict) -> None:
     time.sleep(3)
     pyautogui.click(coordinates['mm_approve'])
     time.sleep(20)
+    pyautogui.click(coordinates['main_blank'])
 
 
 def perform_change_token_task(coordinates: dict, select_token: 1) -> None:
 
     reset_unlock_task(coordinates)
+
     pyautogui.click(coordinates['token_top'])
     time.sleep(1)
     pyautogui.scroll(1000)

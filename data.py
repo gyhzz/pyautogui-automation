@@ -184,7 +184,7 @@ token_unlock_coordinates = {'token_top': (2854, 322),
                    'token_bottom': (2854, 482),
                    'main_tab': (1994, 20),
                    'main_blank': (2118, 359),
-                   'main_unlock': (2680, 716),
+                   'main_unlock': (2680, 690),
                    'main_safe': (2680, 660),
                    'mm_taskbar': (3086, 841),
                    'mm_reject': (3194, 561),
@@ -227,10 +227,10 @@ if __name__ == '__main__':
 
     #test_coordinates(dmail_coordinates)
 
-    # time.sleep(3)
-    # pyautogui.moveTo((2680, 716))
-    # time.sleep(1)
-    # pyautogui.moveTo((2680, 659))
+    #time.sleep(3)
+    pyautogui.moveTo((2680, 690))
+    time.sleep(1)
+    pyautogui.moveTo((2680, 644))
 
     # # Token unlock top token position (low): (2850, 322)
     # # Token unlock bottom token position (low): (2850, 482)
