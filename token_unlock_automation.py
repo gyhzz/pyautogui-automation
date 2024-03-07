@@ -119,7 +119,7 @@ def main() -> None:
             print(f"Log - Unlocked token {select_token} {i+1}/{execution_count} time(s)")
 
             # Define random wait time between tasks
-            wait_time = random.randint(1, 3600)
+            wait_time = random.randint(1, 600)
 
             print(f"Log - Waiting for {wait_time} seconds")
 
