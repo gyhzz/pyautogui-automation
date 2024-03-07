@@ -6,6 +6,8 @@ from data import token_unlock_coordinates
 
 def reset_unlock_task(coordinates: dict) -> None:
 
+    pyautogui.click(coordinates['main_tab'])
+    time.sleep(0.5)
     pyautogui.click(coordinates['main_blank'])
     pyautogui.scroll(1000)
     pyautogui.click(coordinates['token_top'])
@@ -27,12 +29,16 @@ def perform_unlock_task(coordinates: dict) -> None:
     pyautogui.click(coordinates['main_blank'])
     time.sleep(1)
 
-    for i in range(11):
-        pyautogui.press('tab')
+    # for i in range(11):
+    #     pyautogui.press('tab')
+    # pyautogui.press('enter')
 
-    pyautogui.press('enter')
-    time.sleep(10)
+    pyautogui.click(coordinates['main_unlock'])
+    pyautogui.click(coordinates['main_safe'])
+
+    time.sleep(12)
     pyautogui.click(coordinates['mm_blank'])
+    time.sleep(1)
     pyautogui.scroll(1000)
 
     for i in range(7):
@@ -119,7 +125,7 @@ def main() -> None:
             print(f"Log - Unlocked token {select_token} {i+1}/{execution_count} time(s)")
 
             # Define random wait time between tasks
-            wait_time = random.randint(1, 600)
+            wait_time = random.randint(1, 10)
 
             print(f"Log - Waiting for {wait_time} seconds")
 

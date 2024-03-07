@@ -133,8 +133,11 @@ dmail_coordinates = {
 
 token_unlock_coordinates = {'token_top': (2854, 322),
                    'token_bottom': (2854, 482),
+                   'main_tab': (2593, 16),
                    'main_blank': (2118, 359),
-                   'mm_blank': (3142, 257),
+                   'main_unlock': (2680, 716),
+                   'main_safe': (2680, 660),
+                   'mm_blank': (3300, 60),
                    'mm_approve': (3353, 559),
                    'token_1_reset_usdc': (2600, 228),
                    'token_2_reset_eth': (2507, 230),
@@ -155,16 +158,21 @@ if __name__ == '__main__':
     time.sleep(3)
     print(pyautogui.position())
 
-    # Token unlock top token position (low): (2850, 322)
-    # Token unlock bottom token position (low): (2850, 482)
     time.sleep(3)
-    pyautogui.moveTo((2850, 322))
+    pyautogui.moveTo((2680, 716))
     time.sleep(1)
-    pyautogui.moveTo((2850, 482))
+    pyautogui.moveTo((2680, 659))
 
-    # Token unlock top token position (high): (2850, 222)
-    # Token unlock bottom token position (high): (2850, 380)
-    time.sleep(3)
-    pyautogui.moveTo((2850, 222))
-    time.sleep(1)
-    pyautogui.moveTo((2850, 380))
+    # # Token unlock top token position (low): (2850, 322)
+    # # Token unlock bottom token position (low): (2850, 482)
+    # time.sleep(3)
+    # pyautogui.moveTo((2850, 322))
+    # time.sleep(1)
+    # pyautogui.moveTo((2850, 482))
+
+    # # Token unlock top token position (high): (2850, 222)
+    # # Token unlock bottom token position (high): (2850, 380)
+    # time.sleep(3)
+    # pyautogui.moveTo((2850, 222))
+    # time.sleep(1)
+    # pyautogui.moveTo((2850, 380))
