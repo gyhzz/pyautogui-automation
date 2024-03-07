@@ -49,6 +49,7 @@ def perform_unlock_task(coordinates: dict) -> None:
         pyautogui.press('tab')
 
     pyautogui.press('1')
+    time.sleep(0.5)
     pyautogui.scroll(-1000)
     time.sleep(3)
     pyautogui.click(coordinates['mm_approve'])
@@ -98,6 +99,8 @@ def main() -> None:
 
     current_token = 1
     count = 0
+
+    time.sleep(5)
 
     while True:
 
