@@ -1,7 +1,7 @@
 import pyautogui
 import time
 import random
-from data import mail_data, dmail_coordinates
+from data import mail_data, dmail_coordinates, dmail_networks
 
 
 def reset_task(coordinates: dict) -> None:
@@ -12,12 +12,41 @@ def reset_task(coordinates: dict) -> None:
     time.sleep(0.5)
 
 
-def approve_transaction(coordinates: dict) -> None:
+def change_network(coordinates: dict, current_network: int, force: bool) -> int:
+
+    remaining_networks = list(dmail_coordinates['networks'].keys())
+    remaining_networks.remove(current_network)
+    select_network = remaining_networks[random.randint(0, len(remaining_networks)-1)]
+
+    if force:
+        select_network = 3
+
+    print(f"Log - Selected network {select_network}")
+
+    pyautogui.click(coordinates['change_network'])
+    time.sleep(0.5)
+    pyautogui.click(coordinates['networks'][select_network])
+    time.sleep(7)
+    pyautogui.click(coordinates['mm_network_agree'])
+    time.sleep(0.5)
+    pyautogui.click(coordinates['mm_approve'])
+    time.sleep(3)
+    print(f"Log - Changed network from {current_network} to {select_network}")
+
+    return select_network
+
+
+def approve_transaction(coordinates: dict, low_gas: bool) -> None:
 
     pyautogui.click(coordinates['mm_blank'])
-    pyautogui.click(coordinates['mm_edit_gas'])
-    time.sleep(0.5)
-    pyautogui.click(coordinates['mm_low_gas'])
+
+    if low_gas:
+        pyautogui.click(coordinates['mm_edit_gas'])
+        time.sleep(0.5)
+        pyautogui.click(coordinates['mm_low_gas'])
+        time.sleep(0.5)
+
+    pyautogui.scroll(-1000)
     time.sleep(0.5)
     pyautogui.scroll(-1000)
     time.sleep(0.5)
@@ -25,10 +54,17 @@ def approve_transaction(coordinates: dict) -> None:
     time.sleep(10)
 
 
-def compose_email(coordinates: dict, recipient: str, subject: str, body: str) -> None:
+def compose_email(coordinates: dict, recipient: str, subject: str, body: str, current_network: int, switch: bool) -> None:
 
     pyautogui.click(coordinates['compose'])
     time.sleep(0.5)
+
+    if switch:
+        if current_network != 3 and random.randint(1,100) >= 50:
+            current_network = change_network(dmail_coordinates, current_network, True)
+        else:
+            current_network = change_network(dmail_coordinates, current_network, False)
+
     pyautogui.click(coordinates['recipient'])
     pyautogui.write(recipient)
     time.sleep(0.5)
@@ -40,6 +76,8 @@ def compose_email(coordinates: dict, recipient: str, subject: str, body: str) ->
     time.sleep(0.5)
     pyautogui.click(coordinates['send'])
     time.sleep(7)
+
+    return current_network
 
 
 def toggle_high_frq() -> bool:
@@ -57,16 +95,23 @@ def test_coordinates(coordinates: dict) -> None:
     print('Log - Testing coordinates...')
 
     for k,v in coordinates.items():
-        time.sleep(0.5)
-        pyautogui.moveTo(v)
+
+        if type(v) != type(dict()):
+            time.sleep(0.1)
+            pyautogui.moveTo(v)
+        else:
+            for k1,v1 in v.items():
+                time.sleep(0.1)
+                pyautogui.moveTo(v1)
 
 
 def main() -> None:
     
-    print('Log - Testing coordinates...')
     test_coordinates(dmail_coordinates)
+    reset_task(dmail_coordinates)
 
     count = 0
+    current_network = 3
 
     while True:
 
@@ -88,15 +133,15 @@ def main() -> None:
             subject = subjects[random.randint(0, len(subjects)-1)]
             body = bodies[random.randint(0, len(bodies)-1)]
 
-            compose_email(dmail_coordinates, email_address, subject, body)
-            approve_transaction(dmail_coordinates)
+            current_network = compose_email(dmail_coordinates, email_address, subject, body, current_network, switch)
+            approve_transaction(dmail_coordinates, low_gas)
 
-            print(f"Log - Email #{count} sent to {email_address} with subject: {subject}")
+            print(f"Log - Email #{count} sent to {email_address} with subject: {subject} on {dmail_networks[current_network]} network")
 
             if high_frq:
                 wait_time = random.randint(1, 10)
             else:
-                wait_time = random.randint(60, 3600)
+                wait_time = random.randint(1, 10)
 
             print(f'Log - Waiting for {wait_time}')
             time.sleep(wait_time)
@@ -107,5 +152,8 @@ if __name__ == '__main__':
     email_addresses = mail_data['email_addresses']['group_1']
     subjects = mail_data['subjects']['group_1']
     bodies = mail_data['bodies']['group_1']
+
+    switch = False
+    low_gas = True
 
     main()

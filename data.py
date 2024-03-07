@@ -113,6 +113,35 @@ mail_data = {
     }
 }
 
+# networks = {
+#     'networks':{
+#     1: (3000, 357),
+#     2: (3000, 385),
+#     3: (3000, 412),
+#     4: (3000, 440),
+#     5: (3000, 467),
+#     6: (3000, 495),
+#     7: (3000, 522),
+#     8: (3000, 550),
+#     9: (3000, 577),
+#     10: (3000, 605),
+#     11: (3000, 632),
+#     12: (3000, 660),
+#     13: (3000, 687),
+#     14: (3000, 715)
+#     }
+# }
+
+networks = {
+    1: (3000, 357),
+    3: (3000, 412),
+    4: (3000, 440),
+    6: (3000, 495),
+    7: (3000, 522),
+    8: (3000, 550),
+    9: (3000, 577)
+}
+
 dmail_coordinates = {
         'dmail_logo': (2054, 130),
         'main_blank': (1950, 130),
@@ -128,8 +157,28 @@ dmail_coordinates = {
         'mm_blank': (3330, 210),
         'mm_edit_gas': (3363, 322),
         'mm_low_gas': (3342, 195),
-        'mm_approve': (3350, 560)
+        'mm_approve': (3350, 560),
+        'mm_network_agree': (3282, 532),
+        'change_network': (3050, 765),
+        'networks': networks
     }
+
+dmail_networks = {
+    1: 'Ethereum',
+    2: 'BNB',
+    3: 'zkSync',
+    4: 'Linea',
+    5: 'opBNB',
+    6: 'Manta',
+    7: 'Scroll',
+    8: 'Base',
+    9: 'ZKFair',
+    10: 'ZetaChain',
+    11: 'Polygon',
+    12: 'KCC',
+    13: 'Conflux',
+    14: 'IoTeX'
+}
 
 token_unlock_coordinates = {'token_top': (2854, 322),
                    'token_bottom': (2854, 482),
@@ -157,13 +206,31 @@ if __name__ == '__main__':
     import pyautogui
     import time 
 
+
+    def test_coordinates(coordinates: dict) -> None:
+
+        print('Log - Testing coordinates...')
+
+        for k,v in coordinates.items():
+
+            if type(v) != type(dict()):
+                time.sleep(0.3)
+                pyautogui.moveTo(v)
+            else:
+                for k1,v1 in v.items():
+                    time.sleep(0.3)
+                    pyautogui.moveTo(v1)
+
+
     time.sleep(3)
     print(pyautogui.position())
 
-    time.sleep(3)
-    pyautogui.moveTo((2680, 716))
-    time.sleep(1)
-    pyautogui.moveTo((2680, 659))
+    #test_coordinates(dmail_coordinates)
+
+    # time.sleep(3)
+    # pyautogui.moveTo((2680, 716))
+    # time.sleep(1)
+    # pyautogui.moveTo((2680, 659))
 
     # # Token unlock top token position (low): (2850, 322)
     # # Token unlock bottom token position (low): (2850, 482)
