@@ -6,6 +6,10 @@ from data import token_unlock_coordinates
 
 def reset_unlock_task(coordinates: dict) -> None:
 
+    pyautogui.click(coordinates['mm_taskbar'])
+    time.sleep(0.5)
+    pyautogui.click(coordinates['mm_reject'])
+    time.sleep(0.5)
     pyautogui.click(coordinates['main_tab'])
     time.sleep(0.5)
     pyautogui.click(coordinates['main_blank'])
