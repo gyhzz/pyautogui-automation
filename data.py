@@ -182,7 +182,7 @@ dmail_networks = {
 
 token_unlock_coordinates = {'token_top': (2854, 322),
                    'token_bottom': (2854, 482),
-                   'main_tab': (2593, 16),
+                   'main_tab': (1994, 20),
                    'main_blank': (2118, 359),
                    'main_unlock': (2680, 716),
                    'main_safe': (2680, 660),
