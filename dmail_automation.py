@@ -47,9 +47,9 @@ def approve_transaction(coordinates: dict, low_gas: bool) -> None:
         time.sleep(0.5)
 
     pyautogui.scroll(-1000)
-    time.sleep(0.5)
+    time.sleep(1)
     pyautogui.scroll(-1000)
-    time.sleep(0.5)
+    time.sleep(1)
     pyautogui.click(coordinates['mm_approve'])
     time.sleep(10)
 
@@ -57,7 +57,7 @@ def approve_transaction(coordinates: dict, low_gas: bool) -> None:
 def compose_email(coordinates: dict, recipient: str, subject: str, body: str, current_network: int, switch: bool) -> None:
 
     pyautogui.click(coordinates['compose'])
-    time.sleep(0.5)
+    time.sleep(1)
 
     if switch:
         if current_network != 3 and random.randint(1,100) >= 50:
@@ -65,13 +65,16 @@ def compose_email(coordinates: dict, recipient: str, subject: str, body: str, cu
         else:
             current_network = change_network(dmail_coordinates, current_network, False)
 
-    pyautogui.click(coordinates['recipient'])
+    pyautogui.click(coordinates['recipient'], clicks=3)
+    pyautogui.press('backspace')
     pyautogui.write(recipient)
     time.sleep(0.5)
-    pyautogui.click(coordinates['subject'])
+    pyautogui.click(coordinates['subject'], clicks=3)
+    pyautogui.press('backspace')
     pyautogui.write(subject)
     time.sleep(0.5)
-    pyautogui.click(coordinates['body'])
+    pyautogui.click(coordinates['body'], clicks=3)
+    pyautogui.press('backspace')
     pyautogui.write(body)
     time.sleep(0.5)
     pyautogui.click(coordinates['send'])
@@ -139,9 +142,9 @@ def main() -> None:
             print(f"Log - Email #{count} sent to {email_address} with subject: {subject} on {dmail_networks[current_network]} network")
 
             if high_frq:
-                wait_time = random.randint(1, 10)
+                wait_time = random.randint(5, 20)
             else:
-                wait_time = random.randint(1, 10)
+                wait_time = random.randint(5, 20)
 
             print(f'Log - Waiting for {wait_time}')
             time.sleep(wait_time)

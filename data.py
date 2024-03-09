@@ -184,7 +184,7 @@ position = {
     'high': {
         'token_top': (2854, 222),
         'token_bottom': (2854, 382),
-        'main_unlock': (2680, 600)
+        'main_unlock': (2680, 614)
     },
     'low': {
         'token_top': (2854, 322),
@@ -234,15 +234,17 @@ if __name__ == '__main__':
                     time.sleep(0.3)
                     pyautogui.moveTo(v1)
 
-    time.sleep(3)
-    pyautogui.moveTo(token_unlock_coordinates['token_top'])
-    time.sleep(1)
-    pyautogui.moveTo(token_unlock_coordinates['token_bottom'])
-    time.sleep(1)
-    pyautogui.moveTo(token_unlock_coordinates['main_unlock'])
+    # time.sleep(3)
+    # pyautogui.moveTo(token_unlock_coordinates['token_top'])
+    # time.sleep(1)
+    # pyautogui.moveTo(token_unlock_coordinates['token_bottom'])
+    # time.sleep(1)
+    # pyautogui.moveTo(token_unlock_coordinates['main_unlock'])
 
     time.sleep(3)
     print(pyautogui.position())
+    time.sleep(1)
+    pyautogui.moveTo((2690, 614))
 
     #test_coordinates(dmail_coordinates)
 
