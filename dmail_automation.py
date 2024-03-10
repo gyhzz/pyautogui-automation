@@ -156,7 +156,7 @@ if __name__ == '__main__':
     subjects = mail_data['subjects']['group_1']
     bodies = mail_data['bodies']['group_1']
 
-    switch = False
+    switch = True
     low_gas = True
 
     main()
