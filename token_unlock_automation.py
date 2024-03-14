@@ -151,6 +151,6 @@ if __name__ == "__main__":
 
     # Test coordinates
     test_coords(coordinates)
-    wait_max = 600
+    wait_max = 60
 
     main()
