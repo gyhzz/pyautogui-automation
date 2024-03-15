@@ -58,7 +58,7 @@ def approve_transaction(coordinates: dict, low_gas: bool) -> None:
         # pyautogui.click(coordinates['mm_low_gas'])
         # time.sleep(0.5)
 
-        for i in range(6):
+        for i in range(3):
             pyautogui.press('tab')
         pyautogui.press('enter')
         for i in range(5):
