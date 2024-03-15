@@ -2,15 +2,15 @@ import pyautogui
 import time
 import random
 import csv
-import datetime
+from datetime import datetime, timedelta
 from data import token_unlock_coordinates
 
 
 def log_action(wallet_address: str, action_description: str, wait_time: int) -> None:
     with open('token_unlock_log.csv', 'a', newline='') as csvfile:
         log_writer = csv.writer(csvfile)
-        current_date = datetime.datetime.now().strftime("%Y-%m-%d")
-        current_time = datetime.datetime.now().strftime("%H:%M:%S")
+        current_date = datetime.now().strftime("%Y-%m-%d")
+        current_time = datetime.now().strftime("%H:%M:%S")
         log_writer.writerow([current_date, current_time, wallet_address, action_description, wait_time])
 
     print("Log - Action logged to token_unlock_log.csv")
@@ -167,7 +167,7 @@ def launch_unlock_job(wallet: str = "No wallet details", wait_max: int = 10) -> 
             wait_time = random.randint(1, wait_max)
 
             log_action(wallet, f"Unlocked token {select_token} {i+1}/{execution_count} time(s)", wait_time)
-            print(f"Log - Waiting for {wait_time} seconds")
+            print(f"Log - Waiting for {wait_time} seconds from {datetime.now()}. Next action at {datetime.now() + timedelta(seconds=wait_time)}")
 
             time.sleep(wait_time)
 
