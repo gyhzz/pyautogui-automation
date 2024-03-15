@@ -244,7 +244,7 @@ if __name__ == '__main__':
     time.sleep(3)
     print(pyautogui.position())
     time.sleep(1)
-    pyautogui.moveTo((2690, 614))
+    pyautogui.moveTo((3300, 210))
 
     #test_coordinates(dmail_coordinates)
 

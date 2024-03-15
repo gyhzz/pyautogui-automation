@@ -1,7 +1,19 @@
 import pyautogui
 import time
 import random
+import csv
+import datetime
 from data import mail_data, dmail_coordinates, dmail_networks
+
+
+def log_action(wallet_address: str, action_description: str, wait_time: int) -> None:
+    with open('dmail_log.csv', 'a', newline='') as csvfile:
+        log_writer = csv.writer(csvfile)
+        current_date = datetime.datetime.now().strftime("%Y-%m-%d")
+        current_time = datetime.datetime.now().strftime("%H:%M:%S")
+        log_writer.writerow([current_date, current_time, wallet_address, action_description, wait_time])
+
+    print("Log - Action logged to dmail_log.csv")
 
 
 def reset_task(coordinates: dict) -> None:
@@ -41,10 +53,17 @@ def approve_transaction(coordinates: dict, low_gas: bool) -> None:
     pyautogui.click(coordinates['mm_blank'])
 
     if low_gas:
-        pyautogui.click(coordinates['mm_edit_gas'])
-        time.sleep(0.5)
-        pyautogui.click(coordinates['mm_low_gas'])
-        time.sleep(0.5)
+        # pyautogui.click(coordinates['mm_edit_gas'])
+        # time.sleep(0.5)
+        # pyautogui.click(coordinates['mm_low_gas'])
+        # time.sleep(0.5)
+
+        for i in range(6):
+            pyautogui.press('tab')
+        pyautogui.press('enter')
+        for i in range(5):
+            pyautogui.press('tab')
+        pyautogui.press('enter')
 
     pyautogui.scroll(-1000)
     time.sleep(1)
@@ -108,13 +127,25 @@ def test_coordinates(coordinates: dict) -> None:
                 pyautogui.moveTo(v1)
 
 
-def main() -> None:
+def launch_dmail_job(wallet: str = "No wallet details", switch: bool = False, low_gas: bool = True) -> None:
     
     test_coordinates(dmail_coordinates)
     reset_task(dmail_coordinates)
 
+    email_addresses = mail_data['email_addresses']['group_1']
+    subjects = mail_data['subjects']['group_1']
+    bodies = mail_data['bodies']['group_1']
+
     count = 0
     current_network = 3
+
+    # Ensure the CSV has the headers if the file doesn't exist yet
+    try:
+        with open('dmail_log.csv', 'x', newline='') as csvfile:
+            log_writer = csv.writer(csvfile)
+            log_writer.writerow(["Date", "Time", "Wallet Address", "Action Description", "Wait Time"])
+    except FileExistsError:
+        pass  # File already exists, no need to add headers
 
     while True:
 
@@ -146,17 +177,12 @@ def main() -> None:
             else:
                 wait_time = random.randint(5, 20)
 
+            log_action(wallet, f"Email #{count} sent to {email_address} with subject: {subject} on {dmail_networks[current_network]} network", wait_time)
             print(f'Log - Waiting for {wait_time}')
+
             time.sleep(wait_time)
 
 
 if __name__ == '__main__':
 
-    email_addresses = mail_data['email_addresses']['group_1']
-    subjects = mail_data['subjects']['group_1']
-    bodies = mail_data['bodies']['group_1']
-
-    switch = True
-    low_gas = True
-
-    main()
+    launch_dmail_job()

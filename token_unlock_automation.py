@@ -1,7 +1,19 @@
 import pyautogui
 import time
 import random
+import csv
+import datetime
 from data import token_unlock_coordinates
+
+
+def log_action(wallet_address: str, action_description: str, wait_time: int) -> None:
+    with open('token_unlock_log.csv', 'a', newline='') as csvfile:
+        log_writer = csv.writer(csvfile)
+        current_date = datetime.datetime.now().strftime("%Y-%m-%d")
+        current_time = datetime.datetime.now().strftime("%H:%M:%S")
+        log_writer.writerow([current_date, current_time, wallet_address, action_description, wait_time])
+
+    print("Log - Action logged to token_unlock_log.csv")
 
 
 def reset_unlock_task(coordinates: dict) -> None:
@@ -59,6 +71,7 @@ def perform_unlock_task(coordinates: dict) -> None:
     pyautogui.click(coordinates['mm_approve'])
     time.sleep(3)
     pyautogui.click(coordinates['mm_approve'])
+    print("Note - Action has not been locked yet, please wait for action logged message")
     time.sleep(20)
     pyautogui.click(coordinates['main_blank'])
 
@@ -101,11 +114,24 @@ def test_coords(coordinates: dict) -> None:
                 pyautogui.moveTo(v1)
 
 
-def main() -> None:
+def launch_unlock_job(wallet: str = "No wallet details", wait_max: int = 10) -> None:
+
+    coordinates = token_unlock_coordinates
+
+    test_coords(coordinates)
 
     current_token = 1
     count = 0
 
+    # Ensure the CSV has the headers if the file doesn't exist yet
+    try:
+        with open('token_unlock_log.csv', 'x', newline='') as csvfile:
+            log_writer = csv.writer(csvfile)
+            log_writer.writerow(["Date", "Time", "Wallet Address", "Action Description", "Wait Time"])
+    except FileExistsError:
+        pass  # File already exists, no need to add headers
+
+    # Give a few seconds of buffer before starting
     time.sleep(5)
 
     while True:
@@ -140,6 +166,7 @@ def main() -> None:
             # Define random wait time between tasks
             wait_time = random.randint(1, wait_max)
 
+            log_action(wallet, f"Unlocked token {select_token} {i+1}/{execution_count} time(s)", wait_time)
             print(f"Log - Waiting for {wait_time} seconds")
 
             time.sleep(wait_time)
@@ -147,10 +174,4 @@ def main() -> None:
 
 if __name__ == "__main__":
 
-    coordinates = token_unlock_coordinates
-
-    # Test coordinates
-    test_coords(coordinates)
-    wait_max = 60
-
-    main()
+    launch_unlock_job()
