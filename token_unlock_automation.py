@@ -71,7 +71,7 @@ def perform_unlock_task(coordinates: dict) -> None:
     pyautogui.click(coordinates['mm_approve'])
     time.sleep(3)
     pyautogui.click(coordinates['mm_approve'])
-    print("Note - Action has not been locked yet, please wait for action logged message")
+    print("Note - Action has not been logged yet, please wait for action logged message")
     time.sleep(20)
     pyautogui.click(coordinates['main_blank'])
 
