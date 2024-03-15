@@ -3,6 +3,7 @@ import time
 import random
 import csv
 import datetime
+import email_addresses
 from data import mail_data, dmail_coordinates, dmail_networks
 
 
@@ -26,26 +27,26 @@ def reset_task(coordinates: dict) -> None:
 
 def change_network(coordinates: dict, current_network: int, force: bool) -> int:
 
-    remaining_networks = list(dmail_coordinates['networks'].keys())
-    remaining_networks.remove(current_network)
-    select_network = remaining_networks[random.randint(0, len(remaining_networks)-1)]
+    # remaining_networks = list(dmail_coordinates['networks'].keys())
+    # remaining_networks.remove(current_network)
+    # select_network = remaining_networks[random.randint(0, len(remaining_networks)-1)]
 
     if force:
-        select_network = 3
+        current_network = 3
 
-    print(f"Log - Selected network {select_network}")
+    print(f"Log - Selected network {current_network}")
 
     pyautogui.click(coordinates['change_network'])
     time.sleep(0.5)
-    pyautogui.click(coordinates['networks'][select_network])
+    pyautogui.click(coordinates['networks'][current_network])
     time.sleep(7)
     pyautogui.click(coordinates['mm_network_agree'])
     time.sleep(0.5)
     pyautogui.click(coordinates['mm_approve'])
     time.sleep(3)
-    print(f"Log - Changed network from {current_network} to {select_network}")
+    print(f"Log - Changed network to {dmail_networks[current_network]}")
 
-    return select_network
+    return current_network
 
 
 def approve_transaction(coordinates: dict, low_gas: bool) -> None:
@@ -73,16 +74,20 @@ def approve_transaction(coordinates: dict, low_gas: bool) -> None:
     time.sleep(10)
 
 
-def compose_email(coordinates: dict, recipient: str, subject: str, body: str, current_network: int, switch: bool) -> None:
+def compose_email(coordinates: dict, recipient: str, subject: str, body: str, current_network: int, switch: bool, usable_networks: list) -> None:
 
     pyautogui.click(coordinates['compose'])
     time.sleep(1)
 
-    if switch:
-        if current_network != 3 and random.randint(1,100) >= 50:
-            current_network = change_network(dmail_coordinates, current_network, True)
-        else:
-            current_network = change_network(dmail_coordinates, current_network, False)
+    if switch and current_network in usable_networks:
+        change_network(dmail_coordinates, current_network, force=False)
+        current_network += 1
+        # if current_network != 3 and random.randint(1,100) >= 50:
+        #     current_network = change_network(dmail_coordinates, current_network, True)
+        # else:
+        #     current_network = change_network(dmail_coordinates, current_network, False)
+    else:
+        change_network(dmail_coordinates, current_network, force=True)
 
     pyautogui.click(coordinates['recipient'], clicks=3)
     pyautogui.press('backspace')
@@ -127,17 +132,18 @@ def test_coordinates(coordinates: dict) -> None:
                 pyautogui.moveTo(v1)
 
 
-def launch_dmail_job(wallet: str = "No wallet details", switch: bool = False, low_gas: bool = True) -> None:
+def launch_dmail_job(wallet: str = "No wallet details", switch: bool = False, low_gas: bool = True, usable_networks: list = dmail_coordinates['networks'].keys()) -> None:
     
     test_coordinates(dmail_coordinates)
     reset_task(dmail_coordinates)
 
-    email_addresses = mail_data['email_addresses']['group_1']
+    recipients = email_addresses.address_g2
     subjects = mail_data['subjects']['group_1']
     bodies = mail_data['bodies']['group_1']
 
     count = 0
-    current_network = 3
+    current_network = min(usable_networks)
+    print(f"Log - Current network: {current_network}")
 
     # Ensure the CSV has the headers if the file doesn't exist yet
     try:
@@ -163,21 +169,23 @@ def launch_dmail_job(wallet: str = "No wallet details", switch: bool = False, lo
             count += 1
             print(f"Log - Composing email {count}/{execution_count}")
 
-            email_address = email_addresses[random.randint(0, len(email_addresses)-1)]
+            recipient = recipients[random.randint(0, len(recipients)-1)]
             subject = subjects[random.randint(0, len(subjects)-1)]
             body = bodies[random.randint(0, len(bodies)-1)]
 
-            current_network = compose_email(dmail_coordinates, email_address, subject, body, current_network, switch)
+            previous_network = current_network
+            current_network = compose_email(dmail_coordinates, recipient, subject, body, current_network, switch, usable_networks)
             approve_transaction(dmail_coordinates, low_gas)
 
-            print(f"Log - Email #{count} sent to {email_address} with subject: {subject} on {dmail_networks[current_network]} network")
+            print(f"Log - Email #{count} sent to {recipient} with subject: {subject} on {dmail_networks[previous_network]} network")
 
             if high_frq:
                 wait_time = random.randint(5, 20)
             else:
                 wait_time = random.randint(5, 20)
 
-            log_action(wallet, f"Email #{count} sent to {email_address} with subject: {subject} on {dmail_networks[current_network]} network", wait_time)
+            log_action(wallet, f"Email #{count} sent to {recipient} with subject: {subject} on {dmail_networks[previous_network]} network", wait_time)
+            previous_network = current_network
             print(f'Log - Waiting for {wait_time}')
 
             time.sleep(wait_time)

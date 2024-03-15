@@ -133,9 +133,10 @@ mail_data = {
 # }
 
 networks = {
-    1: (3000, 357),
+    2: (3000, 385),
     3: (3000, 412),
     4: (3000, 440),
+    5: (3000, 467),
     6: (3000, 495),
     7: (3000, 522),
     8: (3000, 550),
@@ -245,6 +246,10 @@ if __name__ == '__main__':
     print(pyautogui.position())
     time.sleep(1)
     pyautogui.moveTo((3300, 210))
+
+    # for k,v in networks.items():
+    #     pyautogui.moveTo(v)
+    #     time.sleep(0.2)
 
     #test_coordinates(dmail_coordinates)
 
