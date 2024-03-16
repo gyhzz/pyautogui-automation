@@ -137,9 +137,9 @@ def launch_dmail_job(wallet: str = "No wallet details", switch: bool = False, lo
     test_coordinates(dmail_coordinates)
     reset_task(dmail_coordinates)
 
-    recipients = email_addresses.address_g2
-    subjects = mail_data['subjects']['group_1']
-    bodies = mail_data['bodies']['group_1']
+    recipients = email_addresses.address_g3
+    subjects = mail_data['subjects']['group_2']
+    bodies = mail_data['bodies']['group_2']
 
     count = 0
     current_network = min(usable_networks)
